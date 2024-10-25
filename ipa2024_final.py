@@ -26,9 +26,13 @@ ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 # 3. Prepare parameters get the latest message for messages API.
 
 # Defines a variable that will hold the roomId
+# roomIdToGetMessages = (
+#     "Y2lzY29zcGFyazovL3VzL1JPT00vNTFmNTJiMjAtNWQwYi0xMWVmLWE5YTAtNzlkNTQ0ZjRkNGZi"
+# )
 roomIdToGetMessages = (
-    "Y2lzY29zcGFyazovL3VzL1JPT00vNTFmNTJiMjAtNWQwYi0xMWVmLWE5YTAtNzlkNTQ0ZjRkNGZi"
+    "Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vYzMwMjM0NDAtNWU5ZS0xMWVmLWIxZDgtZjlmYmFjYmU1NzYw"
 )
+
 
 while True:
     # always add 1 second of delay to the loop to not go over a rate limit of API calls
@@ -110,19 +114,20 @@ while True:
         # https://developer.webex.com/docs/basics for more detail
 
         if command == "showrun" and responseMessage == 'ok':
-            filename = "<!!!REPLACEME with show run filename and path!!!>"
-            fileobject = <!!!REPLACEME with open file!!!>
-            filetype = "<!!!REPLACEME with Content-type of the file!!!>"
-            postData = {
-                "roomId": <!!!REPLACEME!!!>,
-                "text": "show running config",
-                "files": (<!!!REPLACEME!!!>, <!!!REPLACEME!!!>, <!!!REPLACEME!!!>),
-            }
-            postData = MultipartEncoder(<!!!REPLACEME!!!>)
-            HTTPHeaders = {
-            "Authorization": ACCESS_TOKEN,
-            "Content-Type": <!!!REPLACEME with postData Content-Type!!!>,
-            }
+            print("1")
+            # filename = "<!!!REPLACEME with show run filename and path!!!>"
+            # fileobject = <!!!REPLACEME with open file!!!>
+            # filetype = "<!!!REPLACEME with Content-type of the file!!!>"
+            # postData = {
+            #     "roomId": <!!!REPLACEME!!!>,
+            #     "text": "show running config",
+            #     "files": (<!!!REPLACEME!!!>, <!!!REPLACEME!!!>, <!!!REPLACEME!!!>),
+            # }
+            # postData = MultipartEncoder(<!!!REPLACEME!!!>)
+            # HTTPHeaders = {
+            # "Authorization": ACCESS_TOKEN,
+            # "Content-Type": <!!!REPLACEME with postData Content-Type!!!>,
+            # }
         # other commands only send text, or no attached file.
         else:
             postData = {"roomId": roomIdToGetMessages, "text": responseMessage}

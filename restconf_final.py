@@ -3,11 +3,14 @@ import requests
 requests.packages.urllib3.disable_warnings()
 
 # Router IP Address is 10.0.15.181-184
-api_url = "<!!!REPLACEME with URL of RESTCONF Configuration API!!!>"
+api_url = "https://10.0.15.183/restconf"
 
 # the RESTCONF HTTP headers, including the Accept and Content-Type
 # Two YANG data formats (JSON and XML) work with RESTCONF 
-headers = <!!!REPLACEME with Accept and Content-Type information headers!!!>
+headers = {
+    "Accept": "application/yang-data+json",
+    "Content-type": "application/yang-data+json"
+}
 basicauth = ("admin", "cisco")
 
 

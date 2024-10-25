@@ -11,7 +11,7 @@ import requests
 import os
 import time 
 from dotenv import load_dotenv
-# import restconf_final
+import restconf_final
 
 
 load_dotenv()
@@ -21,7 +21,6 @@ load_dotenv()
 
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 # ACCESS_TOKEN = os.environ.ACCESS_TOKEN
-print("ACCESS_TOKEN:", ACCESS_TOKEN)
 
 #######################################################################################
 # 3. Prepare parameters get the latest message for messages API.
@@ -73,72 +72,72 @@ while True:
     message = messages[0]["text"]
     print("Received message: " + message)
 
-#     # check if the text of the message starts with the magic character "/" followed by your studentID and a space and followed by a command name
-#     #  e.g.  "/66070123 create"
-#     if message.startswith("/65070147"):
+    # check if the text of the message starts with the magic character "/" followed by your studentID and a space and followed by a command name
+    #  e.g.  "/66070123 create"
+    if message.startswith("/65070147"):
 
-#         # extract the command
-#         command = message[len("/65070147 "):].strip()
-#         print(command)
+        # extract the command
+        command = message[len("/65070147 "):].strip()
+        print(command)
 
-# # 5. Complete the logic for each command
+# 5. Complete the logic for each command
 
-#         if command == "create":
-#             responseMessage = restconf_final.create()  
-#         elif command == "delete":
-#             responseMessage = restconf_final.delete()  
-#         elif command == "enable":
-#             responseMessage = restconf_final.enable()  
-#         elif command == "disable":
-#             responseMessage = restconf_final.disable()  
-#         elif command == "status":
-#             responseMessage = restconf_final.status()  
-#         else:
-#             responseMessage = "Error: No command or unknown command"
+        if command == "create":
+            responseMessage = restconf_final.create()  
+        elif command == "delete":
+            responseMessage = restconf_final.delete()  
+        elif command == "enable":
+            responseMessage = restconf_final.enable()  
+        elif command == "disable":
+            responseMessage = restconf_final.disable()  
+        elif command == "status":
+            responseMessage = restconf_final.status()  
+        else:
+            responseMessage = "Error: No command or unknown command"
         
-# # 6. Complete the code to post the message to the Webex Teams room.
+# 6. Complete the code to post the message to the Webex Teams room.
 
-#         # The Webex Teams POST JSON data for command showrun
-#         # - "roomId" is is ID of the selected room
-#         # - "text": is always "show running config"
-#         # - "files": is a tuple of filename, fileobject, and filetype.
+        # The Webex Teams POST JSON data for command showrun
+        # - "roomId" is is ID of the selected room
+        # - "text": is always "show running config"
+        # - "files": is a tuple of filename, fileobject, and filetype.
 
-#         # the Webex Teams HTTP headers, including the Authoriztion and Content-Type
+        # the Webex Teams HTTP headers, including the Authoriztion and Content-Type
         
-#         # Prepare postData and HTTPHeaders for command showrun
-#         # Need to attach file if responseMessage is 'ok'; 
-#         # Read Send a Message with Attachments Local File Attachments
-#         # https://developer.webex.com/docs/basics for more detail
+        # Prepare postData and HTTPHeaders for command showrun
+        # Need to attach file if responseMessage is 'ok'; 
+        # Read Send a Message with Attachments Local File Attachments
+        # https://developer.webex.com/docs/basics for more detail
 
-#         if command == "showrun" and responseMessage == 'ok':
-#             filename = "<!!!REPLACEME with show run filename and path!!!>"
-#             fileobject = <!!!REPLACEME with open file!!!>
-#             filetype = "<!!!REPLACEME with Content-type of the file!!!>"
-#             postData = {
-#                 "roomId": <!!!REPLACEME!!!>,
-#                 "text": "show running config",
-#                 "files": (<!!!REPLACEME!!!>, <!!!REPLACEME!!!>, <!!!REPLACEME!!!>),
-#             }
-#             postData = MultipartEncoder(<!!!REPLACEME!!!>)
-#             HTTPHeaders = {
-#             "Authorization": ACCESS_TOKEN,
-#             "Content-Type": <!!!REPLACEME with postData Content-Type!!!>,
-#             }
-#         # other commands only send text, or no attached file.
-#         else:
-#             postData = {"roomId": <!!!REPLACEME!!!>, "text": <!!!REPLACEME!!!>}
-#             postData = json.dumps(postData)
+        if command == "showrun" and responseMessage == 'ok':
+            filename = "<!!!REPLACEME with show run filename and path!!!>"
+            fileobject = <!!!REPLACEME with open file!!!>
+            filetype = "<!!!REPLACEME with Content-type of the file!!!>"
+            postData = {
+                "roomId": <!!!REPLACEME!!!>,
+                "text": "show running config",
+                "files": (<!!!REPLACEME!!!>, <!!!REPLACEME!!!>, <!!!REPLACEME!!!>),
+            }
+            postData = MultipartEncoder(<!!!REPLACEME!!!>)
+            HTTPHeaders = {
+            "Authorization": ACCESS_TOKEN,
+            "Content-Type": <!!!REPLACEME with postData Content-Type!!!>,
+            }
+        # other commands only send text, or no attached file.
+        else:
+            postData = {"roomId": roomIdToGetMessages, "text": responseMessage}
+            postData = json.dumps(postData)
 
-#             # the Webex Teams HTTP headers, including the Authoriztion and Content-Type
-#             HTTPHeaders = {"Authorization": <!!!REPLACEME!!!>, "Content-Type": <!!!REPLACEME!!!>}   
+            # the Webex Teams HTTP headers, including the Authoriztion and Content-Type
+            HTTPHeaders = {"Authorization": ACCESS_TOKEN, "Content-Type": "application/json"}   
 
-#         # Post the call to the Webex Teams message API.
-#         r = requests.post(
-#             "<!!!REPLACEME with URL of Webex Teams Messages API!!!>",
-#             data=<!!!REPLACEME!!!>,
-#             headers=<!!!REPLACEME!!!>,
-#         )
-#         if not r.status_code == 200:
-#             raise Exception(
-#                 "Incorrect reply from Webex Teams API. Status code: {}".format(r.status_code)
-#             )
+        # Post the call to the Webex Teams message API.
+        r = requests.post(
+            "https://webexapis.com/v1/messages",
+            data=postData,
+            headers=HTTPHeaders,
+        )
+        if not r.status_code == 200:
+            raise Exception(
+                "Incorrect reply from Webex Teams API. Status code: {}".format(r.status_code)
+            )
